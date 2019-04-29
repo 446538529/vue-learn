@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>First Vue</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+<!--
+    每个 Vue 应用都是通过用 Vue 函数创建一个新的 Vue 实例开始的：
+    var vm = new Vue({
+        // 选项
+    })
+
+-->
+<body>
+
+</body>
+<script type="text/javascript">
+    // 我们的数据对象
+    var data = { a: 1 }
+
+    Object.freeze(data);//注意，使用此方法后，对data任意修改都不会成功，报错
+
+    // 该对象被加入到一个 Vue 实例中
+    var vm = new Vue({
+        data: data
+    })
+
+    // 获得这个实例上的属性
+    // 返回源数据中对应的字段
+    alert(vm.a == data.a); // => true
+
+    // 设置属性也会影响到原始数据
+    vm.a = 2
+    alert(data.a); // => 2
+
+    // ……反之亦然
+    data.a = 3
+    alert(data.a); // => 3
+</script>
+</html>

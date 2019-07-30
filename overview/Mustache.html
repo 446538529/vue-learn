@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>First Vue</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+<body>
+    <!--Mustache 插值 双大括号 {{}}-->
+
+    <div id="app">
+        <p>Messege:{{message}}</p>
+        <p v-once>v-once:Messege:{{message}}</p><!--v-once 只会绑定一次，后续改变不会跟着变-->
+        <p>v-html演示:<span v-html="rawhtml"></span></p><!--v-html能解析html-->
+        <p v-bind:id="id">v-bind:id</p><!--当给html属性赋值的时候只能用v-bind,不能用双大括号，下面是错误的示范-->
+        <p id="{{id}}">这样是不行的</p>
+        <p>插值可以进行简单运算：id+1={{id+10}}<p><!--插值简单运算-->
+        <p>插值可以进三元运算：{{id==20 ? 'YES' : 'NO'}}</p><!--插值运算三元运算-->
+    </div>
+</body>
+<script type="text/javascript">
+    var app = new Vue({
+        el: '#app',
+        data: {
+            message: '插值演示',
+            rawhtml:"<span style='color: #a63224;'>文字变红</span>",
+            id:20,
+            result:true
+        }
+    })
+</script>
+</html>

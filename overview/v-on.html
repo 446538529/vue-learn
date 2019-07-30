@@ -6,18 +6,15 @@
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
 </head>
 <body>
-    <!--鼠标悬停几秒钟查看此处动态绑定的提示信息！-->
     <!--
-        v-bind:指令用于给html的属性赋值
-
-
+        v-on:指令用于添加事件监听
     -->
     <div id="app">
-        <span v-bind:title="message">
-            鼠标悬停几秒钟查看此处动态绑定的提示信息！
-        </span><br/>
-        <a :href="href">
-            简写形式
+        <a v-on:click="reverse">
+            {{message}}
+        </a>
+        <a @click="reverse"><!--简写-->
+            {{message}}
         </a>
     </div>
 </body>
@@ -25,9 +22,15 @@
     var app = new Vue({
         el: '#app',
         data: {
-            message: '页面加载于 ' + new Date().toLocaleString(),
+            message: '点击反转事件',
             href:"www.baidu.com"
+        },
+        methods:{
+            reverse:function () {
+                this.message=this.message.split('').reverse().join('');
+            }
         }
+
     })
 </script>
 </html>

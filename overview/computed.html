@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>First Vue</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+<body>
+    <!--计算属性：computed-->
+    <!--将message值按照单词反转-->
+    <div id="app">
+        <span><!--不用计算属性，貌似也可以做-->
+            {{message.split(' ').reverse().join(' ')}}
+        </span><br>
+        <span><!--用计算属性-->
+            {{computedMessage}}
+        </span><br>
+        <span><!--用方法-->
+            {{reverseMessage()}}
+        </span>
+    </div>
+        <!--区别-->
+<!--
+简单的逻辑计算可能看不出区别
+计算属性依赖于属性的值，上面
+例子中computedMessage依赖于
+message,message如果不变，再次
+取computedMessage值时，是不会
+从新计算的，这个叫计算属性缓存,
+在双大括号中计算跟方法中计算类似
+每次都会重新执行
+-->
+</body>
+<script type="text/javascript">
+    var app = new Vue({
+        el: '#app',
+        data: {
+            message: 'hello vue good',
+            href:"www.baidu.com"
+        },
+        computed:{
+            computedMessage:function () {
+                return this.message.split(' ').reverse().join(' ')
+            }
+        },
+        methods:{
+            reverseMessage:function () {
+                return this.message.split(' ').reverse().join(' ')
+            }
+        }
+    })
+</script>
+</html>

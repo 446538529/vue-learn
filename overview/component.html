@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>First Vue</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+<body>
+    <!--鼠标悬停几秒钟查看此处动态绑定的提示信息！-->
+    <!--
+        component组件:
+-->
+
+    <ol id="app">
+        <todo-item v-for="item in todoList" v-bind:todo="item"></todo-item>
+    </ol>
+</body>
+<script type="text/javascript">
+    Vue.component("todo-item",{
+        props:['todo'],
+        template:'<li>{{todo.text}}</li>'
+    })
+    var app=new Vue({
+        el:"#app",
+        data:{
+            todoList:[
+                {id:0,text:"蔬菜"},
+                {id:1,text:"水果"},
+                {id:2,text:"干果"}]
+        }
+    })
+</script>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>First Vue</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+<body>
+    <div id="app">
+        <!--key管理可复用的元素-->
+        <template v-if="loginType === 'username'">
+            <label>Username</label>
+            <input placeholder="Enter your username">
+        </template>
+        <template v-else>
+            <label>Email</label>
+            <input placeholder="Enter your email address">
+        </template>
+        <button @click="setMode">切换模式</button>
+    </div>
+<!--不同登录模式下input的内容共享，如果不想共享可以加上key区分，如下-->
+<hr>
+    <div id="app1">
+        <!--key管理可复用的元素-->
+        <template v-if="loginType === 'username'">
+            <label>Username</label>
+            <input placeholder="Enter your username" key="username">
+        </template>
+        <template v-else>
+            <label>Email</label>
+            <input placeholder="Enter your email address" key="email">
+        </template>
+        <button @click="setMode">切换模式</button>
+    </div>
+</body>
+<script type="text/javascript">
+    var app = new Vue({
+        el: '#app',
+        data: {
+            loginType: 'username',
+        },
+        methods:{
+            setMode:function () {
+                this.loginType=this.loginType==='username'?'email':'username'
+            }
+        }
+    })
+    var app = new Vue({
+        el: '#app1',
+        data: {
+            loginType: 'username',
+        },
+        methods:{
+            setMode:function () {
+                this.loginType=this.loginType==='username'?'email':'username'
+            }
+        }
+    })
+</script>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>First Vue</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+<body>
+    <!--对象属性变化监听-->
+    <!--
+        由于 JavaScript 的限制，Vue 不能检测对象属性的添加或删除：注意这里说的是添加或删除
+    -->
+
+</body>
+<script type="text/javascript">
+    var app = new Vue({
+        el: '#app',
+        data:{
+            a:1,
+            person:{
+                name:'三毛',
+                age:30
+            }
+        }
+    })
+    app.a=2;//这里还是可以检测到，能够响应
+    app.b=1;
+    Vue.set(app.person,'name','456');//这两种方式都可以用来设置单个属性，或者添加属性
+    app.$set(app.person,'name','odl');
+    //如果需要为多个属性重新赋值，应该用新属性重新创建对象赋值给老的对象，如下
+    app.person=Object.assign({},app.person,{
+        name:'陈二狗',
+        age:99
+    })
+</script>
+</html>

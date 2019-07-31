@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>First Vue</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+<body>
+    <!--数组的变异方法和非变异方法-->
+    <!--
+        变异方法：使用之后会改变数组本身元素的方法，如下
+            push()
+            pop()
+            shift()
+            unshift()
+            splice()
+            sort()
+            reverse()
+        非变异方法：使用之后会生成新的数组，如下
+            filter()
+            concat()
+            slice()
+
+    -->
+    <div id="app">
+        <li v-for="student in students">
+            {{student.name}}-{{student.age}}
+        </li>
+        <input v-model="name"/>
+        <button @click="add">添加一个</button>
+        <button @click="setArrayIndex">设置第一个</button>
+    </div>
+</body>
+<script type="text/javascript">
+    var app = new Vue({
+        el: '#app',
+        data:{
+            students:[
+                {id:1,name:"杨婷",age:26},
+                {id:2,name:"李思君",age:26},
+                {id:3,name:"王超",age:26}
+            ],
+            name:''
+        },
+        methods:{
+            /*动态添加一个元素*/
+            add:function () {
+                this.students.push({name:this.name,age:1})
+            },
+            /*注意，这种通过下标赋值的形式不会被监听到，可以采用下面的两种形式解决，并且可以被监听到*/
+            setArrayIndex:function () {
+                this.students[1]={id:"20",name:'丝锥',age:26}
+            },
+            vueSet:function(){
+                Vue.set(app.students,1,{id:"20",name:'丝锥',age:26})
+                app.students.splice(1,1,{id:"20",name:'丝锥',age:26})
+            }
+
+        }
+    })
+</script>
+</html>

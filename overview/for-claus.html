@@ -7,28 +7,58 @@
 </head>
 <body>
 <!--
-    v-for:循环指令，显而易见
+   1 v-for:循环指令，显而易见
+   2 还可以附带一个index属性,也可以访问父作用域的属性
+   3 也可以用of 代替 in
+   4 可以用来遍历一个对象的属性
+   5 遍历对对象的时候，附带一个属性键名,还可以附带第二个属性，索引
+   6 在遍历元素时，可以给每一个元素一个唯一身份标识(v-bind:key)，通知Vue确定唯一
 
-
+   Tips:在遍历对象时，会按 Object.keys() 的结果遍历，但是不能保证它的结果在不同的 JavaScript 引擎下都一致。
 -->
     <div id="app">
-        <ol>
             <li v-for="student in students">
                 {{student.name}}
             </li>
-        </ol>
+        <hr>
+            <li v-for="(student,index) of students">
+                {{parentMessage}}--{{index}}--{{student.name}}
+            </li>
+        <hr>
+            <li v-for="value of person">
+                {{value}}
+            </li>
+        <hr>
+            <li v-for="(value,name) of person">
+                {{name}}:{{value}}
+            </li>
+        <hr>
+            <li v-for="(value,name,index) of person">
+                {{index}}--{{name}}:{{value}}
+            </li>
+        <hr>
+        <li v-for="student in students" v-bind:key="student.id">
+            {{student.name}}
+        </li>
     </div>
 
 </body>
 <script type="text/javascript">
     var app=new Vue({
         el:"#app",
+
         data:{
+            parentMessage:'parent',
             students:[
-                {name:"杨婷",age:26},
-                {name:"李思君",age:26},
-                {name:"王超",age:26}
-            ]
+                {id:1,name:"杨婷",age:26},
+                {id:2,name:"李思君",age:26},
+                {id:3,name:"王超",age:26}
+            ],
+            person:{
+                name:'YT',
+                age:26,
+                likes:'game'
+            }
         }
     });
 

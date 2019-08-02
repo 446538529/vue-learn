@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>First Vue</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+<body>
+    <!--slot:插槽，再使用一个组件的时候，可能需要在这个组件内部包含一些东西-->
+
+
+    <ol id="app">
+        <link-a url="www.baidu.com">baidu</link-a><!--baidu填充了模板里面的插槽slot-->
+        <link-a url="www.baidu.com">google</link-a>
+        <link-a url="www.baidu.com"><H1>google</H1></link-a><!--插槽里面可以包含任意模板代码以及html-->
+        <!--如果使用模板的时候标签里面加了自己的东西而模板定义里面没有slot标签，则自己加的东西会被抛弃-->
+        <link-a url="www.baidu.com"><H1>{{name}}</H1></link-a>
+        <link-a url="www.baidu.com"></link-a><!--插槽后背内容（默认值）,如果没有给插槽内容作为填充，会使用默认值（'百度'）-->
+        <hr>
+        <!--*************具名插槽(有名字的插槽)************-->
+        <!--
+            使用template的v-slot来定位不同name的插槽
+            最终渲染的结果位置以模板定义的为准，与使用模板的时候的template为准无关
+            默认<slot></slot>的插槽名字为default
+        -->
+        <named-slot>
+            <template v-slot:header>
+                <h1>头插槽</h1>
+            </template>
+            <template v-slot:default>
+                <h1>正文</h1>
+            </template>
+            <template v-slot:footer>
+                <h1>尾插槽</h1>
+            </template>
+        </named-slot>
+        <hr>
+        <!--************************作用域插槽****************************-->
+        <!--<current-user>
+            {{user.firstName}}
+        </current-user>-->
+        <!--上面这种写法，不能正常工作-->
+        <current-user-1>
+            <template v-slot:default="slotProps">
+                {{slotProps.person.name}}
+            </template>
+        </current-user-1>
+        <!--而current-user-1组件可以，因为，子组件通过<slot v-bind:user='user'> 绑定组件内定义的对象
+        在父作用域中就可以通过插槽prop获取到之前绑定的对象，插槽prop的名字可以自己定义
+        -->
+        <!--****************************独占默认插槽缩写**********************************-->
+        <hr>
+        <current-user-1 v-slot:default="slotProps">
+            {{slotProps.person.name}}
+        </current-user-1>
+        <!--当只有默认插槽时，可以直接将v-solt使用在组件标签上，不需要借助于<template>-->
+        <!--这种写法还可以像下面一样更简单，不带参数的 v-slot 被假定对应默认插槽（default）-->
+        <current-user-1 v-slot="slotProps">
+            {{slotProps.person.name}}
+        </current-user-1>
+        <!--注意，默认插槽的缩写语法不能和具名插槽混用，它会导致作用域不明确
+            有多个插槽的时候，应该用带<template>的完整语法
+        -->
+    </ol>
+</body>
+<script type="text/javascript">
+    Vue.component("link-a",{
+        props:['url'],
+        template:'<a v-bind:href="url">' +
+            '<slot>百度</slot>' +
+            '</a>'
+    })
+    Vue.component('named-slot',{
+        template:'<div class="container">\n' +
+            '  <header>\n' +
+            '    <slot name="header"></slot>\n' +
+            '  </header>\n' +
+            '  <main>\n' +
+            '    <slot></slot>\n' +
+            '  </main>\n' +
+            '  <footer>\n' +
+            '    <slot name="footer"></slot>\n' +
+            '  </footer>\n' +
+            '</div>'
+    })
+    Vue.component('current-user',{
+        data:function(){
+            return {
+                user:{
+                    firstName:'yang',
+                    lastName:'ting'
+                },
+                person:{
+                    name:'杨洋',
+                    age:20
+                }
+            }
+        },
+        template:'<span>\n' +
+            '  <slot>{{ user.lastName }}</slot>\n' +
+            '</span>'
+    })
+    Vue.component('current-user-1',{
+        data:function(){
+          return {
+              user:{
+                  firstName:'yang',
+                  lastName:'ting'
+              },
+              person:{
+                  name:'杨洋',
+                  age:20
+              }
+          }
+        },
+        template:'<span>\n' +
+            '  <slot v-bind:user="user" v-bind:person="person">{{ user.lastName }}</slot>\n' +
+            '</span>'
+    })
+    var app=new Vue({
+        el:"#app",
+        data:{
+            todoList:[
+                {id:0,text:"蔬菜"},
+                {id:1,text:"水果"},
+                {id:2,text:"干果"}],
+            name:'YT'
+        }
+    })
+</script>
+</html>

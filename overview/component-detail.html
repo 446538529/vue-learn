@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>First Vue</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+<body>
+    <!--组件细致学习-->
+    <!--
+        component组件:
+-->
+
+    <ol id="app">
+        <todo-item v-for="item in todoList" v-bind:todo="item"></todo-item>
+        <hr>
+        <button-counter></button-counter>//每一个组件都是一个vue实例
+        <button-counter></button-counter>
+        <button-counter></button-counter>
+        <hr>
+        <blog-post title="JAVA"></blog-post>
+        <blog-post title="PHP"></blog-post>
+        <blog-post title="PYTHON"></blog-post>
+        <hr>
+        <blog-post v-for="todo in todoList" v-bind:key="todo.id" v-bind:title="todo.text"></blog-post>
+        <hr>
+        <div :style="{fontSize:fontSizeNum+'em'}">
+            <blog-post-1 v-on:enlarge-text='fontSizeNum+=$event' v-for="post in todoList" v-bind:post="post" v-bind:key="post.id"></blog-post-1>
+        </div>
+    </ol>
+</body>
+<script type="text/javascript">
+    Vue.component("todo-item",{//这种方式为全局组件注册,可以被通过new Vew创建任何实例使用
+        props:['todo'],
+        template:'<li>{{todo.text}}</li>'
+    })
+    Vue.component("button-counter",{
+        data:function () {//组件内的属性以函数的形式返回一个对象，这样每个组件内的属性都是独立的互不影响，如上面的例子，
+            return{         // 每个组件都有自己的count
+                count:0
+            }
+        },
+        template: '<button v-on:click="count++">You clicked me {{ count }} times.</button>'
+    })
+    Vue.component('blog-post',{
+        props: ['title'],//父组件通过props向子组件传递属性
+        template:'<h2>{{title}}</h2>'
+    })
+    Vue.component('blog-post-1',{
+        props:['post'],//父组件通过props向子组件传递对象（适合属性较多的时候）
+        template:'<div class="blog-post">\n' +
+            '      <h3>{{ post.text }}</h3>\n' +
+            '      <div v-html="post.id"></div>\n' +
+            '      <button v-on:click="$emit(\'enlarge-text\',0.1)">放大字体</button>' +//$emit可以调用父组件定义的事件监听
+            '    </div>'
+    })
+    var app=new Vue({
+        el:"#app",
+        data:{
+            todoList:[
+                {id:0,text:"蔬菜"},
+                {id:1,text:"水果"},
+                {id:2,text:"干果"}],
+            fontSizeNum:1
+        }
+    })
+</script>
+</html>

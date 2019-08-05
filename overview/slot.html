@@ -30,7 +30,7 @@
             <template v-slot:default>
                 <h1>正文</h1>
             </template>
-            <template v-slot:footer>
+            <template #footer><!--这里用到了具名插槽的缩写形式//#插槽名//-->
                 <h1>尾插槽</h1>
             </template>
         </named-slot>
@@ -61,6 +61,26 @@
         <!--注意，默认插槽的缩写语法不能和具名插槽混用，它会导致作用域不明确
             有多个插槽的时候，应该用带<template>的完整语法
         -->
+        <hr>
+        <!--也可以在父作用域中直接传入具体的插槽prop（user对象）-->
+        <current-user-1 v-slot="{user}">
+            {{user.firstName}}
+        </current-user-1>
+        <!--还可以给具体插槽prop起别名-->
+        <current-user-1 #default="{user:newName}"><!--使用缩写形式-->
+            {{newName.firstName}}
+        </current-user-1>
+        <!--可以定义后备内容，用于插槽 prop 是 undefined 的情形-->
+        <current-user-1 v-slot="{user={undefinedAttr:'aa'}}">
+            {{user.undefinedAttr}}
+        </current-user-1>
+        <!--例子：制作一个todoList组件-->
+        <hr>
+        <todo-list v-bind:todoList="todoList">
+            <template v-slot:todo="{ todo }">
+                {{ todo.content }}
+            </template>
+        </todo-list>
     </ol>
 </body>
 <script type="text/javascript">
@@ -117,13 +137,25 @@
             '  <slot v-bind:user="user" v-bind:person="person">{{ user.lastName }}</slot>\n' +
             '</span>'
     })
+    Vue.component('todo-list',{
+        props:['todoList'],
+        template:'<ul>\n' +
+            '  <li\n' +
+            '    v-for="todo in todoList"\n' +
+            '    v-bind:key="todo.id">\n' +
+            '    <slot name="todo" v-bind:todo="todo">\n' +
+            '      {{ todo.content }}\n' +
+            '    </slot>\n' +
+            '  </li>\n' +
+            '</ul>'
+    })
     var app=new Vue({
         el:"#app",
         data:{
             todoList:[
-                {id:0,text:"蔬菜"},
-                {id:1,text:"水果"},
-                {id:2,text:"干果"}],
+                {id:0,text:"蔬菜",content:'洗素菜'},
+                {id:1,text:"水果",content:'切水果'},
+                {id:2,text:"干果",content:'吃干果'}],
             name:'YT'
         }
     })
